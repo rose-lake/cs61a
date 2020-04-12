@@ -1,3 +1,4 @@
 *.md
 *.pdf
-notes/*
+notes/
+.DS_Store
