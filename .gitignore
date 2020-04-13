@@ -1,14 +1,17 @@
-# to leave out my personal notes + musings
-# notes/    # my notes and code on composing programs text
-/*.pdf      # only ignores root-level .pdf files, not in lab/
-/*.md       # only ignores root-level .md files, not in notes/
+# be sure to include README
 !README.md
+
+# leave out personal notes + musings and other random reference stuff
+current_state.md
+how_to.md
+cs61a-python-tutor.pdf
 
 # system
 .DS_Store
 
 # cs61a 'ok' testing module files
-.ok*
+*.ok*
+/**/ok
 
 # from github.com/github/gitignore/blob/master/Python.gitignore
 # Byte-compiled / optimized / DLL files
