@@ -189,45 +189,30 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
     turn0, turn1 = 0, 0
-    # play loop :: play until one of the players has a score == goal or greater
     while score0 < goal and score1 < goal:
-        if not feral_hogs:
-            if who == 0:
-                turn0 = take_turn(strategy0(score0, score1), score1, dice)
-                score0 = score0 + turn0
-                if is_swap(score0, score1):
-                    score0, score1 = score1, score0
+        if who == 0:
+            num_rolls = strategy0(score0, score1)
+            turn0_curr = take_turn(num_rolls, score1, dice)
+            if feral_hogs and abs(num_rolls - turn0) == 2:
+                score0 = score0 + turn0_curr + 3
             else:
-                turn1 = take_turn(strategy1(score1, score0), score0, dice)
-                score1 = score1 + turn1
-                if is_swap(score1, score0):
-                    score1, score0 = score0, score1
-            who = other(who)
+                score0 = score0 + turn0_curr
+            turn0 = turn0_curr
+        else:
+            num_rolls = strategy1(score1, score0)
+            turn1_curr = take_turn(num_rolls, score0, dice)
+            if feral_hogs and abs(num_rolls - turn1) == 2:
+                score1 = score1 + turn1_curr + 3
+            else:
+                score1 = score1 + turn1_curr
+            turn1 = turn1_curr
+        if is_swap(score0, score1):
+            score0, score1 = score1, score0
+        who = other(who)
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
     # BEGIN PROBLEM 6
-        else: # feral_hogs is enabled
-            if who == 0:
-                num_rolls = strategy0(score0, score1)
-                turn0_curr = take_turn(num_rolls, score1, dice)
-                if abs(num_rolls - turn0) == 2:
-                    score0 = score0 + turn0_curr + 3
-                else:
-                    score0 = score0 + turn0_curr
-                if is_swap(score0, score1):
-                    score0, score1 = score1, score0
-                turn0 = turn0_curr
-            else:
-                num_rolls = strategy1(score1, score0)
-                turn1_curr = take_turn(num_rolls, score0, dice)
-                if abs(num_rolls - turn1) == 2:
-                    score1 = score1 + turn1_curr + 3
-                else:
-                    score1 = score1 + turn1_curr
-                if is_swap(score1, score0):
-                    score1, score0 = score0, score1
-                turn1 = turn1_curr
-            who = other(who)
+        say = say(score0, score1)
     # END PROBLEM 6
     return score0, score1
 

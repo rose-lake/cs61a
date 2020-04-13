@@ -5,14 +5,14 @@ test = {
     {
       'cases': [
         {
-          'answer': '5e0e1a4c94a7429afae6399105d34f05',
+          'answer': 'Another commentary function.',
           'choices': [
             'Another commentary function.',
             'An integer representing the score.',
             'None.'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'question': 'What does a commentary function return?'
         }
       ],
