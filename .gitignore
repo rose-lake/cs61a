@@ -1,12 +1,11 @@
-# be sure to include README
-!README.md
-
 # leave out personal notes + musings and other random reference stuff
 # current_state.md
 # how_to.md
 # cs61a-python-tutor.pdf
-/*.md
 /*.pdf
+/*.md
+# be sure to include README
+!README.md
 
 # system
 .DS_Store
