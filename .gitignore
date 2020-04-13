@@ -2,9 +2,11 @@
 !README.md
 
 # leave out personal notes + musings and other random reference stuff
-current_state.md
-how_to.md
-cs61a-python-tutor.pdf
+# current_state.md
+# how_to.md
+# cs61a-python-tutor.pdf
+/*.md
+/*.pdf
 
 # system
 .DS_Store
