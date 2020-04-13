@@ -1,7 +1,7 @@
 # to leave out my personal notes + musings
-notes/
-*.pdf
-*.md
+# notes/    # my notes and code on composing programs text
+/*.pdf      # only ignores root-level .pdf files, not in lab/
+/*.md       # only ignores root-level .md files, not in notes/
 !README.md
 
 # system
