@@ -12,12 +12,12 @@
 .DS_Store
 
 # cs61a 'ok' testing module files
-*.ok*
+**/*.ok*
 /**/ok
 
 # from github.com/github/gitignore/blob/master/Python.gitignore
 # Byte-compiled / optimized / DLL files
-*__pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class
 
