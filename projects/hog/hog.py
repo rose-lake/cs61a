@@ -133,11 +133,6 @@ def is_swap(player_score, opponent_score):
                 by definition, c+decimal-fraction < c+1, so we're good
     """
     # BEGIN PROBLEM 4
-    # making my own assertion statements breaks the 'ok' code checker
-    # assert player_score >= 0, "player_score must be positive."
-    # assert player_score < 100, "The game should be over."
-    # assert opponent_score >= 0, "opponent_score must be positive."
-    # assert opponent_score < 100, "The game should be over."
 
     # set up for computing 10^c == 3^b
     b = player_score + opponent_score
@@ -298,7 +293,22 @@ def announce_highest(who, prev_high=0, prev_score=0):
     """
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
     # BEGIN PROBLEM 7
-    "*** YOUR CODE HERE ***"
+    def say(score0, score1):
+        if who == 0:
+            new_high = score0 - prev_score
+            if new_high > prev_high:
+                print(new_high, "point(s)! That's the biggest gain yet for Player", who)
+                return announce_highest(who, new_high, score0)
+            else:
+                return announce_highest(who, prev_high, score0)
+        else:
+            new_high = score1 - prev_score
+            if new_high > prev_high:
+                print(new_high, "point(s)! That's the biggest gain yet for Player", who)
+                return announce_highest(who, new_high, score1)
+            else:
+                return announce_highest(who, prev_high, score1)
+    return say
     # END PROBLEM 7
 
 
