@@ -1,10 +1,7 @@
 # leave out personal notes + musings and other random reference stuff
-# current_state.md
-# how_to.md
-# cs61a-python-tutor.pdf
 /*.pdf
 /*.md
-# be sure to include README
+# be sure to include README; be sure this line comes *after* the /*.md line.
 !README.md
 
 # system
