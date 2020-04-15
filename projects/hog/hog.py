@@ -347,7 +347,16 @@ def make_averaged(g, num_samples=1000):
     3.0
     """
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    assert num_samples > 0, "you can only request a positive number of samples"
+    def average_and_return(*args):
+        # initialize for loop by taking first sample
+        result, n = g(*args), num_samples - 1
+        # loop through the rest of the samples, if any
+        while n:
+            result += g(*args)
+            n = n - 1
+        return result / num_samples
+    return average_and_return
     # END PROBLEM 8
 
 
@@ -356,12 +365,26 @@ def max_scoring_num_rolls(dice=six_sided, num_samples=1000):
     score by calling roll_dice with the provided DICE over NUM_SAMPLES times.
     Assume that the dice always return positive outcomes.
 
+    Solving a Tie: If two numbers of rolls are tied for the maximum average score, return the lower number.
+
     >>> dice = make_test_dice(1, 6)
     >>> max_scoring_num_rolls(dice)
     1
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    num_dice = 10
+    results, n = [], num_dice
+    average_roll_dice = make_averaged(roll_dice,num_samples)
+    while n:
+        # roll dice from 1 to 10
+        results.append(average_roll_dice(num_dice - n + 1,dice))
+        n = n - 1
+    # Because we rolled from 1 to 10,
+    # our list is populated from smallest num_rolls to largest num_rolls
+    # and we can easily satisfy the 'Solving a Tie' requirement
+    # by exploiting the default behavior of Python's max() function
+    # which, in case of a tie, will return the first max value it encountered.
+    return results.index(max(results)) + 1
     # END PROBLEM 9
 
 
@@ -378,6 +401,9 @@ def average_win_rate(strategy, baseline=always_roll(6)):
     """Return the average win rate of STRATEGY against BASELINE. Averages the
     winrate when starting the game as player 0 and as player 1.
     """
+    # Explantory note to self:
+    # this call structure builds the make_averaged function using 'winner'
+    # calls it immediately with the arguments required by 'winner'
     win_rate_as_player_0 = 1 - make_averaged(winner)(strategy, baseline)
     win_rate_as_player_1 = make_averaged(winner)(baseline, strategy)
 
@@ -390,8 +416,11 @@ def run_experiments():
         six_sided_max = max_scoring_num_rolls(six_sided)
         print('Max scoring num rolls for six-sided dice:', six_sided_max)
 
-    if False:  # Change to True to test always_roll(8)
+    if True:  # Change to True to test always_roll(8)
         print('always_roll(8) win rate:', average_win_rate(always_roll(8)))
+
+    if True:  # Change to True to test always_roll(N) for varied N
+        print('always_roll(6) win rate:', average_win_rate(always_roll(6)))
 
     if False:  # Change to True to test bacon_strategy
         print('bacon_strategy win rate:', average_win_rate(bacon_strategy))
