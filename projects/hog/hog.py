@@ -42,7 +42,7 @@ def free_bacon(score):
             - of the score cubed
     - plus one
 
-    score:  The opponent's current score.
+    SCORE:  The opponent's current score.
     """
     assert score < 100, 'The game should be over.'
 
@@ -365,7 +365,7 @@ def max_scoring_num_rolls(dice=six_sided, num_samples=1000):
     score by calling roll_dice with the provided DICE over NUM_SAMPLES times.
     Assume that the dice always return positive outcomes.
 
-    Solving a Tie: If two numbers of rolls are tied for the maximum average score, return the lower number.
+    Solving a Tie: If two numbers of rolls are tied for the maximum average score, return the lower number of rolls.
 
     >>> dice = make_test_dice(1, 6)
     >>> max_scoring_num_rolls(dice)
@@ -379,11 +379,12 @@ def max_scoring_num_rolls(dice=six_sided, num_samples=1000):
         # roll dice from 1 to 10
         results.append(average_roll_dice(num_dice - n + 1,dice))
         n = n - 1
-    # Because we rolled from 1 to 10,
-    # our list is populated from smallest num_rolls to largest num_rolls
+    # Because our number of rolls start from 1 dice and go up to 10 dice,
+    # our results list is populated from smallest to largest number of rolls,
     # and we can easily satisfy the 'Solving a Tie' requirement
     # by exploiting the default behavior of Python's max() function
-    # which, in case of a tie, will return the first max value it encountered.
+    # which, in case of a tie, will return the FIRST max value it encountered,
+    # which in this case, would be the value for the lower number of rolls.
     return results.index(max(results)) + 1
     # END PROBLEM 9
 
@@ -419,14 +420,20 @@ def run_experiments():
     if True:  # Change to True to test always_roll(8)
         print('always_roll(8) win rate:', average_win_rate(always_roll(8)))
 
+    if True:  # Change to True to test always_roll(7)
+        print('always_roll(7) win rate:', average_win_rate(always_roll(7)))
+
     if True:  # Change to True to test always_roll(N) for varied N
         print('always_roll(6) win rate:', average_win_rate(always_roll(6)))
 
-    if False:  # Change to True to test bacon_strategy
+    if True:  # Change to True to test bacon_strategy
         print('bacon_strategy win rate:', average_win_rate(bacon_strategy))
+        print('bacon_strategy win rate against always_roll(4):', average_win_rate(bacon_strategy, always_roll(4)))
+        # question: how to test with other margins than the default margin of 8 ?
 
-    if False:  # Change to True to test swap_strategy
+    if True:  # Change to True to test swap_strategy
         print('swap_strategy win rate:', average_win_rate(swap_strategy))
+        print('swap_strategy win rate against always_roll(4):', average_win_rate(swap_strategy, always_roll(4)))
 
     if False:  # Change to True to test final_strategy
         print('final_strategy win rate:', average_win_rate(final_strategy))
@@ -440,7 +447,11 @@ def bacon_strategy(score, opponent_score, margin=8, num_rolls=6):
     rolls NUM_ROLLS otherwise.
     """
     # BEGIN PROBLEM 10
-    return 6  # Replace this statement
+    if free_bacon(opponent_score) >= margin:
+        return 0
+    else:
+        return num_rolls
+    # return 6  # Replace this statement
     # END PROBLEM 10
 
 
@@ -450,7 +461,29 @@ def swap_strategy(score, opponent_score, margin=8, num_rolls=6):
     non-beneficial swap. Otherwise, it rolls NUM_ROLLS.
     """
     # BEGIN PROBLEM 11
-    return 6  # Replace this statement
+    free_score = free_bacon(opponent_score)
+    new_score = score + free_score
+
+    # swap is triggered
+    if is_swap(new_score, opponent_score):
+
+        # if it's a good swap, roll 0 to trigger it
+        if opponent_score >= new_score:
+            return 0
+        else:
+            return num_rolls
+
+    # swap is not triggered.
+    else:
+
+        # if free_bacon is AT LEAST margin, roll 0
+        if free_score >= margin:
+            return 0
+
+        # roll num_rolls to avoid less than margin result
+        else:
+            return num_rolls
+
     # END PROBLEM 11
 
 
