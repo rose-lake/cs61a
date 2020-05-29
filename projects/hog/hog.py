@@ -413,29 +413,32 @@ def average_win_rate(strategy, baseline=always_roll(6)):
 
 def run_experiments():
     """Run a series of strategy experiments and report results."""
-    if True:  # Change to False when done finding max_scoring_num_rolls
+    if False:  # Change to False when done finding max_scoring_num_rolls
         six_sided_max = max_scoring_num_rolls(six_sided)
         print('Max scoring num rolls for six-sided dice:', six_sided_max)
 
-    if True:  # Change to True to test always_roll(8)
+    if False:  # Change to True to test always_roll(8)
         print('always_roll(8) win rate:', average_win_rate(always_roll(8)))
 
-    if True:  # Change to True to test always_roll(7)
+    if False:  # Change to True to test always_roll(7)
         print('always_roll(7) win rate:', average_win_rate(always_roll(7)))
 
-    if True:  # Change to True to test always_roll(N) for varied N
+    if False:  # Change to True to test always_roll(N) for varied N
         print('always_roll(6) win rate:', average_win_rate(always_roll(6)))
 
-    if True:  # Change to True to test bacon_strategy
+    if False:  # Change to True to test bacon_strategy
         print('bacon_strategy win rate:', average_win_rate(bacon_strategy))
         print('bacon_strategy win rate against always_roll(4):', average_win_rate(bacon_strategy, always_roll(4)))
         # question: how to test with other margins than the default margin of 8 ?
 
     if True:  # Change to True to test swap_strategy
         print('swap_strategy win rate:', average_win_rate(swap_strategy))
-        print('swap_strategy win rate against always_roll(4):', average_win_rate(swap_strategy, always_roll(4)))
+        # print('swap_strategy win rate against always_roll(4):',
+        #       average_win_rate(swap_strategy, always_roll(4)))
+        # print('swap_strategy win rate against always_roll(6):',
+        #       average_win_rate(swap_strategy, always_roll(6)))
 
-    if False:  # Change to True to test final_strategy
+    if True:  # Change to True to test final_strategy
         print('final_strategy win rate:', average_win_rate(final_strategy))
 
     "*** You may add additional experiments as you wish ***"
@@ -490,10 +493,23 @@ def swap_strategy(score, opponent_score, margin=8, num_rolls=6):
 def final_strategy(score, opponent_score):
     """Write a brief description of your final strategy.
 
-    *** YOUR DESCRIPTION HERE ***
+    Since MARGIN=8 is the default value passed into swap_strategy (*see note*), the key is to check when this margin works against us rather than for us, namely, check to see when we are within MARGIN of GOAL_SCORE. In such a case, we simply modify the MARGIN parameter to be the distance to GOAL_SCORE.
+
+    Another tweak is to modify the NUM_ROLLS parameter as we approach GOAL_SCORE, we wish to reduce NUM_ROLLS to reduce risk.
+
+    This strategy gives a consistently higher win_rate than calling swap_strategy alone.
     """
     # BEGIN PROBLEM 12
-    return 6  # Replace this statement
+    # always higher than swap_stratgey
+    # consistently returns win rates between .59 and .62+ win rate
+    # the lowest win rate I've seen was .5855, and a rate this low is rare
+    margin = 8
+    if score > GOAL_SCORE - margin:
+        return swap_strategy(score, opponent_score, GOAL_SCORE - score, 2)
+    elif score > GOAL_SCORE - 2*margin:
+        return swap_strategy(score, opponent_score, margin, 4)
+    else:
+        return swap_strategy(score, opponent_score)
     # END PROBLEM 12
 
 ##########################
